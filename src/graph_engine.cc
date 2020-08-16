@@ -5,9 +5,7 @@
 namespace GraphQueryEngine {
 
 uint32_t Graph::MinEdgeBfs(int src, int dest) {
-  // visited[num_nodes] for keeping track of visited
-  // node in BFS
-  // bool visited[num_nodes] = {0};
+  // Initialize visited vector as false
   std::vector<bool> visited;
   visited.resize(num_nodes, false);
 
@@ -35,12 +33,10 @@ uint32_t Graph::MinEdgeBfs(int src, int dest) {
       visited[adjacency_list[x][i]] = 1;
     }
   }
-
   return distance[dest];
 }
 
 std::string GraphEngine::PostGraphRequest(graph::Request &request) {
-
   // Parse Adjacency List
   std::vector<GraphQueryEngine::Graph::Edge> edges;
   for (int i = 0; i < request.adjacency_list_size(); i++) {
@@ -121,7 +117,7 @@ std::string GraphEngine::MinDistanceGraphRequest(graph::Request &request) {
 }
 
 std::string GraphEngine::ProcessRequest(graph::Request &request) {
-
+  // Process the RequestType
   switch (request.request_type()) {
   case graph::POST_GRAPH:
     return PostGraphRequest(request);
@@ -133,5 +129,4 @@ std::string GraphEngine::ProcessRequest(graph::Request &request) {
     return "ERROR";
   }
 }
-
 } // namespace GraphQueryEngine
