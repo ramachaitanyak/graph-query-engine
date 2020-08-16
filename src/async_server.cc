@@ -16,13 +16,13 @@
  *
  */
 
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <thread>
 
-#include <grpcpp/grpcpp.h>
 #include <grpc/support/log.h>
+#include <grpcpp/grpcpp.h>
 
 #include "src/include/graph.h"
 
@@ -32,18 +32,18 @@
 #include "graph.grpc.pb.h"
 #endif
 
+using graph::GraphEngine;
+using graph::Request;
+using graph::Response;
 using grpc::Server;
 using grpc::ServerAsyncResponseWriter;
 using grpc::ServerBuilder;
-using grpc::ServerContext;
 using grpc::ServerCompletionQueue;
+using grpc::ServerContext;
 using grpc::Status;
-using graph::Request;
-using graph::Response;
-using graph::GraphEngine;
 
 class ServerImpl final {
- public:
+public:
   ~ServerImpl() {
     server_->Shutdown();
     // Always shutdown the completion queue after the server.
@@ -73,16 +73,17 @@ class ServerImpl final {
     HandleRpcs();
   }
 
- private:
+private:
   // Class encompasing the state and logic needed to serve a request.
   class CallData {
-   public:
+  public:
     // Take in the "service" instance (in this case representing an asynchronous
     // server) and the completion queue "cq" used for asynchronous communication
     // with the gRPC runtime.
-    CallData(GraphEngine::AsyncService* service,
-        ServerCompletionQueue* cq, GraphQueryEngine::GraphEngineSharedPtr graph_qe)
-        : service_(service), cq_(cq), graph_qe_(graph_qe), responder_(&ctx_), status_(CREATE) {
+    CallData(GraphEngine::AsyncService *service, ServerCompletionQueue *cq,
+             GraphQueryEngine::GraphEngineSharedPtr graph_qe)
+        : service_(service), cq_(cq), graph_qe_(graph_qe), responder_(&ctx_),
+          status_(CREATE) {
       // Invoke the serving logic right away.
       Proceed();
     }
@@ -97,8 +98,8 @@ class ServerImpl final {
         // the tag uniquely identifying the request (so that different CallData
         // instances can serve different requests concurrently), in this case
         // the memory address of this CallData instance.
-        service_->RequestGraphEngineRequest(&ctx_, &request_, &responder_, cq_, cq_,
-                                  this);
+        service_->RequestGraphEngineRequest(&ctx_, &request_, &responder_, cq_,
+                                            cq_, this);
       } else if (status_ == PROCESS) {
         // Spawn a new CallData instance to serve new clients while we process
         // the one for this CallData. The instance will deallocate itself as
@@ -106,8 +107,7 @@ class ServerImpl final {
         new CallData(service_, cq_, graph_qe_);
 
         // The actual processing.
-        std::string prefix("Hello ");
-        reply_.set_message(prefix + graph_qe_->ProcessRequest(request_));
+        reply_.set_message(graph_qe_->ProcessRequest(request_));
 
         // And we are done! Let the gRPC runtime know we've finished, using the
         // memory address of this instance as the uniquely identifying tag for
@@ -121,12 +121,12 @@ class ServerImpl final {
       }
     }
 
-   private:
+  private:
     // The means of communication with the gRPC runtime for an asynchronous
     // server.
-    GraphEngine::AsyncService* service_;
+    GraphEngine::AsyncService *service_;
     // The producer-consumer queue where for asynchronous server notifications.
-    ServerCompletionQueue* cq_;
+    ServerCompletionQueue *cq_;
     // The graph query engine shared pointer
     GraphQueryEngine::GraphEngineSharedPtr graph_qe_;
     // Context for the rpc, allowing to tweak aspects of it such as the use
@@ -144,14 +144,14 @@ class ServerImpl final {
 
     // Let's implement a tiny state machine with the following states.
     enum CallStatus { CREATE, PROCESS, FINISH };
-    CallStatus status_;  // The current serving state.
+    CallStatus status_; // The current serving state.
   };
 
   // This can be run in multiple threads if needed.
   void HandleRpcs() {
     // Spawn a new CallData instance to serve new clients.
     new CallData(&service_, cq_.get(), graph_query_engine_);
-    void* tag;  // uniquely identifies a request.
+    void *tag; // uniquely identifies a request.
     bool ok;
     while (true) {
       // Block waiting to read the next event from the completion queue. The
@@ -161,7 +161,7 @@ class ServerImpl final {
       // tells us whether there is any kind of event or cq_ is shutting down.
       GPR_ASSERT(cq_->Next(&tag, &ok));
       GPR_ASSERT(ok);
-      static_cast<CallData*>(tag)->Proceed();
+      static_cast<CallData *>(tag)->Proceed();
     }
   }
 
@@ -171,7 +171,7 @@ class ServerImpl final {
   GraphQueryEngine::GraphEngineSharedPtr graph_query_engine_;
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   ServerImpl server;
   server.Run();
 
