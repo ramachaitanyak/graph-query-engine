@@ -58,7 +58,7 @@ cc_binary(
     srcs = [
         "src/async_server.cc",
         "src/graph_engine.cc",
-        "src/include/graph.h"
+        "src/include/graph.h",
         ],
     defines = ["BAZEL_BUILD"],
     deps = [

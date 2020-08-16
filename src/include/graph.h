@@ -2,6 +2,9 @@
 
 #include <map>
 #include <vector>
+#include <functional>
+#include <string>
+#include <mutex>
 
 #ifdef BAZEL_BUILD
 #include "protos/graph.grpc.pb.h"
@@ -52,7 +55,13 @@ class GraphEngine {
     ~GraphEngine() = default;
     
     std::string ProcessRequest(graph::Request& request);
-    std::map<uint32_t, GraphSharedPtr> graph_db;
+  private:
+    std::hash<std::string> hash_fn;
+    std::string PostGraphRequest(graph::Request& request);
+    std::string DeleteGraphRequest(graph::Request& request);
+    std::string MinDistanceGraphRequest(graph::Request& request);
+    std::mutex graph_db_mutex;
+    std::map<uint64_t, GraphSharedPtr> graph_db;
 };
 
 using GraphEngineSharedPtr = std::shared_ptr<GraphEngine>;

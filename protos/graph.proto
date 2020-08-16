@@ -36,11 +36,11 @@ message Edges {
 message MinDistance {
   uint32 begin_node = 1;
   uint32 end_node = 2;
-  uint32 map_id = 3;
+  uint64 map_id = 3;
 }
 
 message DeleteGraph {
-  uint32 map_id = 1;
+  uint64 map_id = 1;
 }
 
 // The request message containing the user's name.
@@ -50,6 +50,7 @@ message Request {
   MinDistance min_distance = 3;
   DeleteGraph delete_graph = 4;
   string graph_name = 5;
+  uint32 graph_total_nodes = 6;
 }
 
 enum ResponseType {
