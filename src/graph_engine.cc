@@ -13,7 +13,7 @@ uint32_t Graph::MinEdgeBfs(int src, int dest) {
 
   // Initialize distances as 0
   std::vector<uint32_t> distance;
-  distance.resize(num_nodes, std::numeric_limits<int>::max());
+  distance.resize(num_nodes, std::numeric_limits<uint32_t>::max());
 
   // queue to do BFS.
   std::queue<uint32_t> Q;

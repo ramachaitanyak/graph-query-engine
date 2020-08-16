@@ -139,7 +139,7 @@ int main() {
 
     std::string min_result = test_graph_engine->ProcessRequest(min_request);
     if (min_result.compare(
-            "OK, found minimum distance between 0 3 to be 2147483647") == 0) {
+            "OK, found minimum distance between 0 3 to be 4294967295") == 0) {
       std::cout << "Testcase-4, Minimum distance in a disconnected graph passed"
                 << std::endl;
     } else {

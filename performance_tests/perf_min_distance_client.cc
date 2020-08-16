@@ -269,7 +269,7 @@ int main(int argc, char **argv) {
   nodes_minimum_distance_count = 0;
 
   // Post graph operation
-  std::string graph_name = "site_network";
+  std::string graph_name = "datacenter_network";
   graph_client.PostGraphRequest(graph_name, adj_list,
                                 18); // The actual RPC call!
 
