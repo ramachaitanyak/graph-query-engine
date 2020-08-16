@@ -280,13 +280,6 @@ int main(int argc, char **argv) {
   // Delete graph from server with graph_id
   graph_client.DeleteGraphRequest(graph_id);
 
-  /*
-  for (int i = 0; i < 100; i++) {
-      std::string user("world " + std::to_string(i));
-      graph_client.PostGraphRequest(user, adj_list);  // The actual RPC call!
-  }
-  */
-
   std::cout << "Press control-c to quit" << std::endl << std::endl;
   thread_.join(); // blocks forever
 
