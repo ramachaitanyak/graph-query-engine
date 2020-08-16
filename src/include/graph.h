@@ -18,8 +18,8 @@ namespace GraphQueryEngine {
 
 class Graph {
   public:
-    Graph(int nodes, std::vector<std::vector<uint32_t>> adj_list)
-      : num_nodes(nodes), adjacency_list(adj_list) {}
+    Graph(int nodes, std::vector<std::vector<uint32_t>> adj_list, std::string name)
+      : num_nodes(nodes), adjacency_list(adj_list), graph_name(name) {}
     ~Graph() = default;
     class Edge {
       public:
@@ -44,6 +44,8 @@ class Graph {
     uint32_t num_nodes;
     // Adjacency list of edges for graph
     std::vector<std::vector<uint32_t>> adjacency_list;
+    // Name of the graph
+    std::string graph_name;
 
 };
 

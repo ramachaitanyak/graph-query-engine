@@ -26,7 +26,7 @@
 #include <grpcpp/grpcpp.h>
 #include <thread>
 
-#include "include/graph.h"
+#include "src/include/graph.h"
 
 #ifdef BAZEL_BUILD
 #include "protos/graph.grpc.pb.h"

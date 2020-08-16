@@ -1,5 +1,6 @@
 #include "src/include/graph.h"
 #include <queue>
+#include <limits>
 
 namespace GraphQueryEngine {
 
@@ -12,8 +13,7 @@ uint32_t Graph::MinEdgeBfs(int src, int dest) {
 
   // Initialize distances as 0
   std::vector<uint32_t> distance;
-  distance.resize(num_nodes, 0);
-  // int distance[num_nodes] = {0};
+  distance.resize(num_nodes, std::numeric_limits<int>::max());
 
   // queue to do BFS.
   std::queue<uint32_t> Q;
@@ -59,13 +59,16 @@ std::string GraphEngine::PostGraphRequest(graph::Request &request) {
     adj_list[edge.src].push_back(edge.dest);
   }
 
-  // Build Graph
-  GraphSharedPtr graph_shared_ptr =
-      std::make_shared<Graph>(num_nodes, adj_list);
-
   // Compute hash value based on the graph_name to handle collisions
   std::string graph_name = request.graph_name();
+
+  // Build Graph
+  GraphSharedPtr graph_shared_ptr =
+      std::make_shared<Graph>(num_nodes, adj_list, graph_name);
+
+  // Compute the hash value from graph name to generate graph id
   uint64_t hash_val = hash_fn(graph_name);
+
   // Lock the graph db to check for duplicate graphs with hash_val
   {
     std::lock_guard<std::mutex> guard(graph_db_mutex);

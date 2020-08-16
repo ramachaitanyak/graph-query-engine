@@ -67,3 +67,18 @@ cc_binary(
         "@com_github_grpc_grpc//:grpc++",
     ],
 )
+
+cc_binary(
+    name = "unit_test_graphdb",
+    srcs = [
+        "unit_tests/graphdb_unit_test.cc",
+        "src/graph_engine.cc",
+        "src/include/graph.h",
+        ],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        ":graph_cc_grpc",
+        # http_archive made this label available for binding
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
