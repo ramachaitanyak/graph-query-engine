@@ -35,17 +35,21 @@ message Edges {
   uint32 dest = 2;
 }
 
+// Structure to represent a compute minimum distance
+// query
 message MinDistance {
   uint32 begin_node = 1;
   uint32 end_node = 2;
   uint64 map_id = 3;
 }
 
+// Structure to represent delete graph query
 message DeleteGraph {
   uint64 map_id = 1;
 }
 
-// The request message containing the user's name.
+// The request message to server specificying operation
+// and payload.
 message Request {
   RequestType request_type = 1;
   repeated Edges adjacency_list = 2;

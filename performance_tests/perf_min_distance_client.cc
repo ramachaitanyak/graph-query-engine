@@ -16,13 +16,13 @@
  *
  */
 
+#include <chrono>
+#include <cstdlib>
 #include <iostream>
 #include <memory>
 #include <string>
 #include <unistd.h>
 #include <vector>
-#include <chrono>
-#include <cstdlib>
 
 #include <grpc/support/log.h>
 #include <grpcpp/grpcpp.h>
@@ -264,7 +264,6 @@ int main(int argc, char **argv) {
   adj_list.push_back(GraphQueryEngine::Graph::Edge(16, 17));
   adj_list.push_back(GraphQueryEngine::Graph::Edge(17, 3));
 
-
   // Initialize minimum distance response count to 0
   nodes_minimum_distance_count = 0;
 
@@ -286,23 +285,25 @@ int main(int argc, char **argv) {
 
   // Perform 10000 minimum distance operations
   auto start = high_resolution_clock::now();
-  for (int i=0; i < 10000; i++) {
-    //Generate random source between 0-17
-    int src = rand()%18;
+  for (int i = 0; i < 10000; i++) {
+    // Generate random source between 0-17
+    int src = rand() % 18;
     // Generate random destination between 0-17
-    int dest = rand()%18;
+    int dest = rand() % 18;
     // Calculate minimum distance
     graph_client.CalculateMinDistanceRequest(graph_id, src, dest);
   }
 
-  while(1) {
+  while (1) {
     if (nodes_minimum_distance_count == 10000) {
       break;
     }
   }
   auto stop = high_resolution_clock::now();
   auto duration = duration_cast<microseconds>(stop - start);
-  std::cout<<"Time taken to perform 10000 minimum distance queries for a 18 node graph is "<<duration.count()<<" microseconds"<<std::endl;
+  std::cout << "Time taken to perform 10000 minimum distance queries for a 18 "
+               "node graph is "
+            << duration.count() << " microseconds" << std::endl;
 
   // Delete graph from server with graph_id
   graph_client.DeleteGraphRequest(graph_id);

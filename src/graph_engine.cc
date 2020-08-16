@@ -1,6 +1,6 @@
 #include "src/include/graph.h"
-#include <queue>
 #include <limits>
+#include <queue>
 
 namespace GraphQueryEngine {
 

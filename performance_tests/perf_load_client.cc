@@ -16,12 +16,12 @@
  *
  */
 
+#include <chrono>
 #include <iostream>
 #include <memory>
 #include <string>
 #include <unistd.h>
 #include <vector>
-#include <chrono>
 
 #include <grpc/support/log.h>
 #include <grpcpp/grpcpp.h>
@@ -246,17 +246,20 @@ int main(int argc, char **argv) {
   // Post performance test
   auto start_load = high_resolution_clock::now();
   for (int i = 0; i < 100000; i++) {
-      std::string graph_name("site_network " + std::to_string(i));
-      graph_client.PostGraphRequest(graph_name, adj_list, 9);  // The actual RPC call!
+    std::string graph_name("site_network " + std::to_string(i));
+    graph_client.PostGraphRequest(graph_name, adj_list,
+                                  9); // The actual RPC call!
   }
-  auto stop_load = high_resolution_clock::now(); 
+  auto stop_load = high_resolution_clock::now();
   auto duration_load = duration_cast<microseconds>(stop_load - start_load);
-  std::cout<<"Time taken to perform 100000 loads for a 9 node unique graphs is "<<duration_load.count()<<" microseconds"<<std::endl;
+  std::cout
+      << "Time taken to perform 100000 loads for a 9 node unique graphs is "
+      << duration_load.count() << " microseconds" << std::endl;
 
   // Delete performance test
   auto start_del = high_resolution_clock::now();
   int del = 0;
-  while(1) {
+  while (1) {
     if (graph_client.graph_ids.size() != 0) {
       graph_id = graph_client.graph_ids[del];
       graph_client.DeleteGraphRequest(graph_id);
@@ -270,7 +273,9 @@ int main(int argc, char **argv) {
   }
   auto stop_del = high_resolution_clock::now();
   auto duration_del = duration_cast<microseconds>(stop_del - start_del);
-  std::cout<<"Time taken to perform 100000 deletes for a 9 node unique graphs is "<<duration_del.count()<<" microseconds"<<std::endl;
+  std::cout
+      << "Time taken to perform 100000 deletes for a 9 node unique graphs is "
+      << duration_del.count() << " microseconds" << std::endl;
 
   std::cout << "Press control-c to quit" << std::endl << std::endl;
   thread_.join(); // blocks forever

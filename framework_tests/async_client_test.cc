@@ -168,15 +168,17 @@ public:
       }
 
       // Check for minimum distance response
-      if (response.compare("OK, found minimum distance between 0 5 to be 3") == 0) {
-        std::cout<<"Successfully computed the minimum distance between 0 5"<<std::endl;
+      if (response.compare("OK, found minimum distance between 0 5 to be 3") ==
+          0) {
+        std::cout << "Successfully computed the minimum distance between 0 5"
+                  << std::endl;
       }
 
       // Check for delete
       size_t found_delete = response.find("delete");
       if (found_delete != std::string::npos) {
-        std::cout<<"Successfully deleted posted graph"<<std::endl;
-        std::cout<<"******* Tests complete *******"<<std::endl;
+        std::cout << "Successfully deleted posted graph" << std::endl;
+        std::cout << "******* Tests complete *******" << std::endl;
       }
 
       // Capture only the graph_id stored, exclude ERROR and OK
@@ -251,7 +253,7 @@ int main(int argc, char **argv) {
   adj_list.push_back(GraphQueryEngine::Graph::Edge(7, 8));
 
   // Post graph operation
-  std::cout<<"Sending post graph request from client ..."<<std::endl;
+  std::cout << "Sending post graph request from client ..." << std::endl;
   std::string graph_name = "site_network";
   graph_client.PostGraphRequest(graph_name, adj_list,
                                 9); // The actual RPC call!
@@ -260,8 +262,13 @@ int main(int argc, char **argv) {
   uint64_t graph_id = 0;
   while (1) {
     if (graph_client.graph_ids.size() != 0) {
-      std::cout<<"Successfully added graph id " + std::to_string(graph_client.graph_ids[0]) + " to server"<<std::endl;
-      std::cout<<"Sending request to calculate min distance between 0 & 5 on graph " + std::to_string(graph_client.graph_ids[0])<<std::endl;
+      std::cout << "Successfully added graph id " +
+                       std::to_string(graph_client.graph_ids[0]) + " to server"
+                << std::endl;
+      std::cout << "Sending request to calculate min distance between 0 & 5 on "
+                   "graph " +
+                       std::to_string(graph_client.graph_ids[0])
+                << std::endl;
       graph_client.CalculateMinDistanceRequest(graph_client.graph_ids[0], 0, 5);
       graph_id = graph_client.graph_ids[0];
       break;
