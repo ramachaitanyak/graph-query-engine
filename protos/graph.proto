@@ -1,0 +1,66 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package graph;
+
+// The greeting service definition.
+service GraphEngine {
+  // Sends a greeting
+  rpc GraphEngineRequest (Request) returns (Response) {}
+}
+
+enum RequestType {
+  POST_GRAPH = 0;
+  GET_MIN_DISTANCE = 1;
+  DELETE_GRAPH = 2;
+}
+
+message Edges {
+  uint32 src = 1;
+  uint32 dest = 2;
+}
+
+message MinDistance {
+  uint32 begin_node = 1;
+  uint32 end_node = 2;
+  uint32 map_id = 3;
+}
+
+message DeleteGraph {
+  uint32 map_id = 1;
+}
+
+// The request message containing the user's name.
+message Request {
+  RequestType request_type = 1;
+  repeated Edges adjacency_list = 2;
+  MinDistance min_distance = 3;
+  DeleteGraph delete_graph = 4;
+  string graph_name = 5;
+}
+
+enum ResponseType {
+  SUCCESS = 0;
+  FAILED = 1;
+  MIN_DIST_VAL = 2;
+}
+
+// The response message containing the greetings
+message Response {
+  ResponseType response_type = 1;
+  uint32 min_dist_value = 2;
+  string message = 3;
+}
