@@ -8,6 +8,9 @@ Operations supported by server:
 - Post a graph, returning an ID to be used in subsequent operations
 - Get the shortest path between two vertices in a previously posted graph
 - Delete a graph from the server
+
+NOTE: Server by default runs on localhost:50051, please make sure no other
+      application is running on the same port of the machine.
 ```
 
 
@@ -61,10 +64,56 @@ bazel build :async_server
 ```
 ## Executing and Running the Code
 
-To build and run the server and client, run the following:
+After `bazel build :all` is complete; all the binaries are in `./bazel-bin`
 ```
-bazel run :async_server
-bazel run :async_client
+To run server:
+    $:graph-query-engine rkavuluru$ ./bazel-bin/async_server
+    Server listening on 0.0.0.0:50051
+
+To run CLI-client:
+    $:graph-query-engine rkavuluru$ ./bazel-bin/async_client
+    Graph Engine CLI Usage: 
+    <CMD> [options]
+    POST_GRAPH <graph-name> <path-to-graph-file>
+    MIN_DISTANCE <graph-id> <source_node> <destination_node>
+    DELETE_GRAPH <graph-id>
+    QUIT
+
+    Waiting on user input ...
+    
+    The CLI prompt waits on user input ..
+    
+To run unit tests:
+    $:graph-query-engine rkavuluru$ ./bazel-bin/unit_test_graphdb
+    Testcase-1, Post duplicate graphs passed
+    Testcase-2, Delete non-existent graph passed
+    Testcase-3, Minimum distance from a node to itself passed
+    Testcase-4, Minimum distance in a disconnected graph passed
+
+To run framework tests:
+    Run Server first:
+       $:graph-query-engine rkavuluru$ ./bazel-bin/async_server
+    Run Framework client next:
+       $:graph-query-engine rkavuluru$ ./bazel-bin/framework_async_client
+       Sending post graph request from client ...
+       Client received: 11611133480338205011
+       Successfully added graph id 11611133480338205011 to server
+       Sending request to calculate min distance between 0 & 5 on graph 11611133480338205011
+       Press control-c to quit
+
+       Client received: OK, found minimum distance between 0 5 to be 3
+       Successfully computed the minimum distance between 0 5
+       Client received: OK, deleted graph with ID: 11611133480338205011
+       Successfully deleted posted graph
+       ******* Tests complete *******
+
+To run performance tests:
+    Run Server first:
+        $:graph-query-engine rkavuluru$ ./bazel-bin/async_server
+    Run specific performance test:
+        $:graph-query-engine rkavuluru$ ./bazel-bin/perf_load_client
+        OR
+        $:graph-query-engine rkavuluru$ ./bazel-bin/perf_min_distance_client
 ```
 
 ## Testing the code
@@ -167,7 +216,8 @@ Following is identified for future work:
 5. Obtain CPU and Memory utilization of the server, currently only time spent
    on CPU is recorded for performance. For memory management, we could run
    `valgrind` to identify leaks.
-6. Setup CI job, to check for memory leaks using coverity/valgrind.
+6. Improve CLI error handling with proper integer limits.
+7. Setup CI job, to check for memory leaks using coverity/valgrind.
 ```
 
 ## Known Bugs:
