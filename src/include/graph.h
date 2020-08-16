@@ -58,11 +58,34 @@ class GraphEngine {
     
     std::string ProcessRequest(graph::Request& request);
   private:
+    /*
+     * Hash function to generate graph-ids based on graph names
+     */
     std::hash<std::string> hash_fn;
+    /*
+     * Post graph request to submit a graph to server
+     * @param request, contains type of request, number of nodes and adjancency list
+     * @return returns a string indicating the state of operation
+     */
     std::string PostGraphRequest(graph::Request& request);
+    /*
+     * Delete graph request to delete a graph from server
+     * @param request, consisting the graph id to be deleted
+     * @return returns a string indicating the state of operation
+     *         success, collision and inexistent graphs are
+     *         appropriately returned in the message
+     */
     std::string DeleteGraphRequest(graph::Request& request);
+    /*
+     * Compute minimum distance between 2 nodes of a posted graph
+     * @param request, consists of graph id, source and destination nodes
+     * @return returns a string indicating the state of operation
+     */
     std::string MinDistanceGraphRequest(graph::Request& request);
+    // Mutex to guard graphdb against concurrent operations
     std::mutex graph_db_mutex;
+    // graph db consisting of the graph id as key and the graph
+    // as the value
     std::map<uint64_t, GraphSharedPtr> graph_db;
 };
 

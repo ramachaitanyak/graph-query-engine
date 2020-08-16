@@ -130,7 +130,7 @@ int main() {
     uint64_t graph_id = std::stoull(result);
 
     // Request min distance from 0 to 3, which must be
-    // `std::numeric_limits<int>::max()`
+    // `std::numeric_limits<uint32_t>::max()`
     Request min_request;
     min_request.set_request_type(graph::GET_MIN_DISTANCE);
     min_request.mutable_min_distance()->set_begin_node(0);

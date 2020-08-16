@@ -16,18 +16,20 @@ syntax = "proto3";
 
 package graph;
 
-// The greeting service definition.
+// The graph engine service definition.
 service GraphEngine {
-  // Sends a greeting
+  // Sends a graph engine request
   rpc GraphEngineRequest (Request) returns (Response) {}
 }
 
+// The following are supported graph engine requests
 enum RequestType {
   POST_GRAPH = 0;
   GET_MIN_DISTANCE = 1;
   DELETE_GRAPH = 2;
 }
 
+// Structure to represent a graph while Posting
 message Edges {
   uint32 src = 1;
   uint32 dest = 2;
@@ -53,13 +55,14 @@ message Request {
   uint32 graph_total_nodes = 6;
 }
 
+// CXX:TODO Utilize the response types
 enum ResponseType {
   SUCCESS = 0;
   FAILED = 1;
   MIN_DIST_VAL = 2;
 }
 
-// The response message containing the greetings
+// CXX:TODO Utilize response message containing the information
 message Response {
   ResponseType response_type = 1;
   uint32 min_dist_value = 2;

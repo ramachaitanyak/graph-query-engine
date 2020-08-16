@@ -54,6 +54,48 @@ cc_binary(
 )
 
 cc_binary(
+    name = "framework_async_client",
+    srcs = [
+        "framework_tests/async_client_test.cc",
+        "src/include/graph.h"
+        ],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        ":graph_cc_grpc",
+        # http_archive made this label available for binding
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
+
+cc_binary(
+    name = "perf_load_client",
+    srcs = [
+        "performance_tests/perf_load_client.cc",
+        "src/include/graph.h"
+        ],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        ":graph_cc_grpc",
+        # http_archive made this label available for binding
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
+
+cc_binary(
+    name = "perf_min_distance_client",
+    srcs = [
+        "performance_tests/perf_min_distance_client.cc",
+        "src/include/graph.h"
+        ],
+    defines = ["BAZEL_BUILD"],
+    deps = [
+        ":graph_cc_grpc",
+        # http_archive made this label available for binding
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
+
+cc_binary(
     name = "async_server",
     srcs = [
         "src/async_server.cc",
