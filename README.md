@@ -230,3 +230,8 @@ Abort trap: 6
 This is due to the lack of graceful handling of signals. On those ocassions, please
 increase the VM limits or reduce the load experimenting with.
 ```
+## References:
+```
+1. Protobuf tutorials: https://developers.google.com/protocol-buffers/docs/cpptutorial
+2. Proto3 types: https://developers.google.com/protocol-buffers/docs/proto3
+```
